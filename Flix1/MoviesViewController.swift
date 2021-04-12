@@ -39,7 +39,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                 JSONSerialization.jsonObject(with: data, options: [])
                 as! [String: Any]
 
-              print(dataDictionary)
+//              print(dataDictionary)
             
               // TODO: Get the array of movies
               // TODO: Store the movies in a property to use elsewhere
@@ -86,14 +86,38 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
     }
 
-    /*
+    
     // MARK: - Navigation
-
+    
+    /* my note: this is called when you're leaving a screen & want to prepare the next screen
+        - usually called when you're sending data*/
+    
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        
+        /* note: the sender is the table view cell and tableView can determine which index path
+         a particular cell is from */
+        
+        // Find the selected movie
+        let cell = sender as! UITableViewCell
+        let indexPath = tableView.indexPath(for: cell)!
+        let movie = movies[indexPath.row]
+        
+        // Pass the selected movie to the MovieDetailsViewController
+        
+        /* note: segue knows where it's going.  You need to cast to
+         a MovieDetailsViewController specifically so that you can update
+         it's movie property (basically passing it the movie info) */
+        
+        let detailsViewController = segue.destination as! MovieDetailsViewController
+        detailsViewController.movie = movie
+        
+        /* Make it so that when you click a cell and then go back to the
+         movies list screen, it doesn't stay selected */
+        tableView.deselectRow(at: indexPath, animated: true)
     }
-    */
+    
 
 }
